@@ -1,0 +1,15 @@
+version: '3'
+
+tasks:
+  generate-client:
+    desc: Generate Go clients for each OpenAPI spec file
+    cmds:
+      - |
+        for spec in hack/specs/*_API_Spec.yaml; do
+          package_name=$(basename "$spec" _API_Spec.yaml | sed 's/_//g' | sed 's/\./_/g' )
+          package_name_lower=$(echo "$package_name" | tr '[:upper:]' '[:lower:]')
+          echo "Generating client for $spec with package name $package_name"
+          mkdir -p "pkg/pingdom/client/${package_name_lower}"
+          oapi-codegen --package="${package_name_lower}" --generate=client,types "$spec" > "pkg/pingdom/client/${package_name_lower}/${package_name}.go"
+        done
+    silent: false
