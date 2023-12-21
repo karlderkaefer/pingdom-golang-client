@@ -15,6 +15,10 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+const (
+	BearerAuthScopes = "bearerAuth.Scopes"
+)
+
 // SummaryProbesCheckid defines model for summary.probes_checkid.
 type SummaryProbesCheckid = int
 

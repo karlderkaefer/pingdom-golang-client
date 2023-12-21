@@ -16,6 +16,10 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+const (
+	BearerAuthScopes = "bearerAuth.Scopes"
+)
+
 // Defines values for MaintenanceIdPutRecurrencetype.
 const (
 	MaintenanceIdPutRecurrencetypeDay   MaintenanceIdPutRecurrencetype = "day"

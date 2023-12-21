@@ -15,6 +15,10 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+const (
+	BearerAuthScopes = "bearerAuth.Scopes"
+)
+
 // SummaryHoursofdayCheckid defines model for summary.hoursofday_checkid.
 type SummaryHoursofdayCheckid = int
 

@@ -35,6 +35,28 @@ def split_openapi_by_tags(file_path):
     output_files = []
     for tag, spec in specs_by_tag.items():
         output_file = f'specs/{tag.replace(" ", "_")}_API_Spec.yaml'
+        # add security schemes to components
+        # components:
+        #     securitySchemes:
+        #         bearerAuth:            # arbitrary name for the security scheme
+        #         type: http
+        #         scheme: bearer
+        #         bearerFormat: JW
+        # security:
+        #     - bearerAuth: []            # use the same name as above
+        if 'components' not in spec:
+            spec['components'] = {}
+        if 'securitySchemes' not in spec['components']:
+            spec['components']['securitySchemes'] = {}
+        spec['components']['securitySchemes']['bearerAuth'] = {
+            'type': 'http',
+            'scheme': 'bearer',
+            'bearerFormat': 'JWT'
+        }
+        if 'security' not in spec:
+            spec['security'] = []
+        spec['security'].append({'bearerAuth': []})
+        
         with open(output_file, 'w') as file:
             yaml.safe_dump(spec, file)
         output_files.append(output_file)

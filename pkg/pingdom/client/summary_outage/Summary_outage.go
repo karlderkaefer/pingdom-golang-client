@@ -15,6 +15,10 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+const (
+	BearerAuthScopes = "bearerAuth.Scopes"
+)
+
 // Defines values for SummaryOutageOrder.
 const (
 	Asc  SummaryOutageOrder = "asc"

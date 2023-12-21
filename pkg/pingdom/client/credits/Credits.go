@@ -13,6 +13,10 @@ import (
 	"strings"
 )
 
+const (
+	BearerAuthScopes = "bearerAuth.Scopes"
+)
+
 // CreditsRespAttrs defines model for credits_resp_attrs.
 type CreditsRespAttrs struct {
 	Credits *struct {

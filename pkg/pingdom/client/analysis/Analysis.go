@@ -15,6 +15,10 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+const (
+	BearerAuthScopes = "bearerAuth.Scopes"
+)
+
 // AnalysisAnalysisid defines model for analysis_analysisid.
 type AnalysisAnalysisid = int
 
