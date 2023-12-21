@@ -284,6 +284,7 @@ components:
             $ref: '#/components/schemas/State'
           type: array
       type: object
+      x-go-name: CustomCheckStatus
     CheckWithStringType:
       allOf:
       - $ref: '#/components/schemas/Check'
@@ -3270,6 +3271,11 @@ components:
                   type: integer
               type: object
           type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
 info:
   description: "# Welcome to the Pingdom API!\nThe Pingdom API is a way for you to\
     \ automate your interaction with the Pingdom system. With the API, you can create\
@@ -3517,3 +3523,5 @@ paths:
       summary: Returns a list of Pingdom probe servers
       tags:
       - Probes
+security:
+- bearerAuth: []

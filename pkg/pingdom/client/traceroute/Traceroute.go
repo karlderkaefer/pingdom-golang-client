@@ -15,6 +15,10 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+const (
+	BearerAuthScopes = "bearerAuth.Scopes"
+)
+
 // Traceroute defines model for Traceroute.
 type Traceroute struct {
 	Traceroute *TracerouteData `json:"traceroute,omitempty"`

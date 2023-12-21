@@ -15,6 +15,10 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+const (
+	BearerAuthScopes = "bearerAuth.Scopes"
+)
+
 // SummaryAverageBycountry defines model for summary.average_bycountry.
 type SummaryAverageBycountry = bool
 

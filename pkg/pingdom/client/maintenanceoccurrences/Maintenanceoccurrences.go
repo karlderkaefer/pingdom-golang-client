@@ -16,6 +16,10 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+const (
+	BearerAuthScopes = "bearerAuth.Scopes"
+)
+
 // MaintenanceOccurrencesDelete defines model for maintenance.occurrences_delete.
 type MaintenanceOccurrencesDelete struct {
 	// Occurrenceids Comma-separated list of identifiers of maintenance occurrences to delete.

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/deepmap/oapi-codegen/pkg/securityprovider"
 	"github.com/karlderkaefer/pingdom-golang-client/pkg/pingdom/client"
 	"github.com/karlderkaefer/pingdom-golang-client/pkg/pingdom/client/checks"
 )
@@ -13,9 +14,14 @@ func main() {
 	// Set the authorization token in the HTTP client headers
 	token := os.Getenv("PINGDOM_API_TOKEN")
 
-	// Create a new Pingdom client with the HTTP client
-	clientOpts := checks.WithHTTPClient(client.NewDefaultApiTokenClient(token))
-	client, err := checks.NewClientWithResponses(client.DefaultBaseURL, clientOpts)
+	bearerTokenProvider, err := securityprovider.NewSecurityProviderBearerToken(token)
+	if err != nil {
+		panic(err)
+	}
+	client, err := checks.NewClientWithResponses(
+		client.DefaultBaseURL, 
+		checks.WithRequestEditorFn(bearerTokenProvider.Intercept),
+	)
 	if err != nil {
 		fmt.Println("Error creating Pingdom client:", err)
 		return

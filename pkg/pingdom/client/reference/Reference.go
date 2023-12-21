@@ -13,6 +13,10 @@ import (
 	"strings"
 )
 
+const (
+	BearerAuthScopes = "bearerAuth.Scopes"
+)
+
 // Country defines model for Country.
 type Country struct {
 	// Id Country id

@@ -17,6 +17,10 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+const (
+	BearerAuthScopes = "bearerAuth.Scopes"
+)
+
 // Defines values for CheckGeneralType.
 const (
 	CheckGeneralTypeRecording CheckGeneralType = "recording"
@@ -128,8 +132,8 @@ type CheckSimple struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// CheckStatus defines model for CheckStatus.
-type CheckStatus struct {
+// CustomCheckStatus defines model for CheckStatus.
+type CustomCheckStatus struct {
 	// CheckId ID of the check
 	CheckId *PropertyCheckID `json:"check_id,omitempty"`
 
@@ -399,12 +403,12 @@ type ReportPerformanceReportResolution string
 
 // ReportStatusAll defines model for ReportStatusAll.
 type ReportStatusAll struct {
-	Report *[]CheckStatus `json:"report,omitempty"`
+	Report *[]CustomCheckStatus `json:"report,omitempty"`
 }
 
 // ReportStatusSingle defines model for ReportStatusSingle.
 type ReportStatusSingle struct {
-	Report *CheckStatus `json:"report,omitempty"`
+	CustomCheckStatus *CustomCheckStatus `json:"report,omitempty"`
 }
 
 // State defines model for State.
