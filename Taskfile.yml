@@ -14,9 +14,16 @@ tasks:
         done
     silent: false
   generate:
+    desc: generate openapi client with openapi generator
     cmds:
      - |
         docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
         -i /local/hack/API_3.1.yaml \
         -g go \
-        -o /local/out/go
+        -o /local/pkg/pingdom/openapi
+  replace-github-repo:
+    desc: set github repo name in generated files
+    cmds: 
+      - |
+        git_user_repo="github.com/karlderkaefer/pingdom-golang-client/pkg/pingdom/openapi"
+        find ./pkg/pingdom/openapi -type f -exec sed -i "" "s|github.com/GIT_USER_ID/GIT_REPO_ID|$git_user_repo|g" {} \;
