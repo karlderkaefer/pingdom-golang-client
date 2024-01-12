@@ -13,3 +13,10 @@ tasks:
           oapi-codegen --package="${package_name_lower}" --generate=client,types "$spec" > "pkg/pingdom/client/${package_name_lower}/${package_name}.go"
         done
     silent: false
+  generate:
+    cmds:
+     - |
+        docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
+        -i /local/hack/API_3.1.yaml \
+        -g go \
+        -o /local/out/go
