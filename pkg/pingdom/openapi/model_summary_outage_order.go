@@ -20,8 +20,8 @@ type SummaryOutageOrder string
 
 // List of summary.outage_order
 const (
-	ASC SummaryOutageOrder = "asc"
-	DESC SummaryOutageOrder = "desc"
+	SUMMARY_ORDER_ASC SummaryOutageOrder = "asc"
+	SUMMARY_ORDER_DESC SummaryOutageOrder = "desc"
 )
 
 // All allowed values of SummaryOutageOrder enum

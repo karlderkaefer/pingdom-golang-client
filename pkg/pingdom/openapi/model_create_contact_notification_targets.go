@@ -17,37 +17,37 @@ import (
 
 // CreateContactNotificationTargets struct for CreateContactNotificationTargets
 type CreateContactNotificationTargets struct {
-	[]EmailsInner *[]EmailsInner
-	[]SMSesInner *[]SMSesInner
+	EmailsInner *[]EmailsInner
+	SMSesInner *[]SMSesInner
 }
 
 // Unmarshal JSON data into any of the pointers in the struct
 func (dst *CreateContactNotificationTargets) UnmarshalJSON(data []byte) error {
 	var err error
 	// try to unmarshal JSON data into []EmailsInner
-	err = json.Unmarshal(data, &dst.[]EmailsInner);
+	err = json.Unmarshal(data, &dst.EmailsInner);
 	if err == nil {
-		json[]EmailsInner, _ := json.Marshal(dst.[]EmailsInner)
-		if string(json[]EmailsInner) == "{}" { // empty struct
-			dst.[]EmailsInner = nil
+		jsonEmailsInner, _ := json.Marshal(dst.EmailsInner)
+		if string(jsonEmailsInner) == "{}" { // empty struct
+			dst.EmailsInner = nil
 		} else {
 			return nil // data stored in dst.[]EmailsInner, return on the first match
 		}
 	} else {
-		dst.[]EmailsInner = nil
+		dst.EmailsInner = nil
 	}
 
 	// try to unmarshal JSON data into []SMSesInner
-	err = json.Unmarshal(data, &dst.[]SMSesInner);
+	err = json.Unmarshal(data, &dst.SMSesInner);
 	if err == nil {
-		json[]SMSesInner, _ := json.Marshal(dst.[]SMSesInner)
-		if string(json[]SMSesInner) == "{}" { // empty struct
-			dst.[]SMSesInner = nil
+		jsonSMSesInner, _ := json.Marshal(dst.SMSesInner)
+		if string(jsonSMSesInner) == "{}" { // empty struct
+			dst.SMSesInner = nil
 		} else {
 			return nil // data stored in dst.[]SMSesInner, return on the first match
 		}
 	} else {
-		dst.[]SMSesInner = nil
+		dst.SMSesInner = nil
 	}
 
 	return fmt.Errorf("data failed to match schemas in anyOf(CreateContactNotificationTargets)")
@@ -55,12 +55,12 @@ func (dst *CreateContactNotificationTargets) UnmarshalJSON(data []byte) error {
 
 // Marshal data from the first non-nil pointers in the struct to JSON
 func (src *CreateContactNotificationTargets) MarshalJSON() ([]byte, error) {
-	if src.[]EmailsInner != nil {
-		return json.Marshal(&src.[]EmailsInner)
+	if src.EmailsInner != nil {
+		return json.Marshal(&src.EmailsInner)
 	}
 
-	if src.[]SMSesInner != nil {
-		return json.Marshal(&src.[]SMSesInner)
+	if src.SMSesInner != nil {
+		return json.Marshal(&src.SMSesInner)
 	}
 
 	return nil, nil // no data in anyOf schemas

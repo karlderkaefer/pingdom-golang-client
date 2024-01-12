@@ -20,8 +20,8 @@ type MaintenanceOrder string
 
 // List of maintenance_order
 const (
-	ASC MaintenanceOrder = "asc"
-	DESC MaintenanceOrder = "desc"
+	MAINTENANCE_ORDER_ASC MaintenanceOrder = "asc"
+	MAINTENANCE_ORDER_DESC MaintenanceOrder = "desc"
 )
 
 // All allowed values of MaintenanceOrder enum
