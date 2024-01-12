@@ -13,7 +13,6 @@ package openapi
 import (
 	"encoding/json"
 	"fmt"
-	"bytes"
 )
 
 // ModifyCheckSettings - struct for ModifyCheckSettings

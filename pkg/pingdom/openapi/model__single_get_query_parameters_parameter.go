@@ -13,7 +13,6 @@ package openapi
 import (
 	"encoding/json"
 	"fmt"
-	"bytes"
 )
 
 // SingleGetQueryParametersParameter - struct for SingleGetQueryParametersParameter
