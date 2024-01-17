@@ -60,12 +60,12 @@ func (a *TMSChecksAPIService) AddCheckExecute(r ApiAddCheckRequest) (*CheckSimpl
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CheckSimple
+		localVarReturnValue  *CheckSimpleResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TMSChecksAPIService.AddCheck")
 	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue.Check, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/tms/check"
@@ -74,7 +74,7 @@ func (a *TMSChecksAPIService) AddCheckExecute(r ApiAddCheckRequest) (*CheckSimpl
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.checkWithoutID == nil {
-		return localVarReturnValue, nil, reportError("checkWithoutID is required and must be specified")
+		return localVarReturnValue.Check, nil, reportError("checkWithoutID is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -98,19 +98,19 @@ func (a *TMSChecksAPIService) AddCheckExecute(r ApiAddCheckRequest) (*CheckSimpl
 	localVarPostBody = r.checkWithoutID
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return localVarReturnValue, nil, err
+		return localVarReturnValue.Check, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarReturnValue.Check, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarReturnValue.Check, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -118,7 +118,7 @@ func (a *TMSChecksAPIService) AddCheckExecute(r ApiAddCheckRequest) (*CheckSimpl
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
+		return localVarReturnValue.Check, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
@@ -127,10 +127,10 @@ func (a *TMSChecksAPIService) AddCheckExecute(r ApiAddCheckRequest) (*CheckSimpl
 			body:  localVarBody,
 			error: err.Error(),
 		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
+		return localVarReturnValue.Check, localVarHTTPResponse, newErr
 	}
 
-	return localVarReturnValue, localVarHTTPResponse, nil
+	return localVarReturnValue.Check, localVarHTTPResponse, nil
 }
 
 type ApiDeleteCheckRequest struct {
@@ -426,12 +426,12 @@ func (a *TMSChecksAPIService) GetCheckExecute(r ApiGetCheckRequest) (*CheckWitho
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CheckWithoutIDGET
+		localVarReturnValue  *TMSCheckResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TMSChecksAPIService.GetCheck")
 	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue.Check, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/tms/check/{cid}"
@@ -463,19 +463,19 @@ func (a *TMSChecksAPIService) GetCheckExecute(r ApiGetCheckRequest) (*CheckWitho
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return localVarReturnValue, nil, err
+		return localVarReturnValue.Check, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarReturnValue.Check, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarReturnValue.Check, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -483,7 +483,7 @@ func (a *TMSChecksAPIService) GetCheckExecute(r ApiGetCheckRequest) (*CheckWitho
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
+		return localVarReturnValue.Check, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
@@ -492,10 +492,10 @@ func (a *TMSChecksAPIService) GetCheckExecute(r ApiGetCheckRequest) (*CheckWitho
 			body:  localVarBody,
 			error: err.Error(),
 		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
+		return localVarReturnValue.Check, localVarHTTPResponse, newErr
 	}
 
-	return localVarReturnValue, localVarHTTPResponse, nil
+	return localVarReturnValue.Check, localVarHTTPResponse, nil
 }
 
 type ApiGetCheckReportPerformanceRequest struct {
@@ -1006,12 +1006,14 @@ func (a *TMSChecksAPIService) ModifyCheckExecute(r ApiModifyCheckRequest) (*Chec
 		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  *CheckWithoutIDGET
+		//localVarReturnValue  *CheckWithoutIDGET
+		// require custom casting as spec is wrong
+		localVarReturnValue  *TMSCheckResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TMSChecksAPIService.ModifyCheck")
 	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue.Check, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/tms/check/{cid}"
@@ -1021,7 +1023,7 @@ func (a *TMSChecksAPIService) ModifyCheckExecute(r ApiModifyCheckRequest) (*Chec
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.checkWithoutIDPUT == nil {
-		return localVarReturnValue, nil, reportError("checkWithoutIDPUT is required and must be specified")
+		return localVarReturnValue.Check, nil, reportError("checkWithoutIDPUT is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -1045,19 +1047,19 @@ func (a *TMSChecksAPIService) ModifyCheckExecute(r ApiModifyCheckRequest) (*Chec
 	localVarPostBody = r.checkWithoutIDPUT
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return localVarReturnValue, nil, err
+		return localVarReturnValue.Check, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarReturnValue.Check, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarReturnValue.Check, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -1065,7 +1067,7 @@ func (a *TMSChecksAPIService) ModifyCheckExecute(r ApiModifyCheckRequest) (*Chec
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
+		return localVarReturnValue.Check, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
@@ -1074,8 +1076,8 @@ func (a *TMSChecksAPIService) ModifyCheckExecute(r ApiModifyCheckRequest) (*Chec
 			body:  localVarBody,
 			error: err.Error(),
 		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
+		return localVarReturnValue.Check, localVarHTTPResponse, newErr
 	}
 
-	return localVarReturnValue, localVarHTTPResponse, nil
+	return localVarReturnValue.Check, localVarHTTPResponse, nil
 }
