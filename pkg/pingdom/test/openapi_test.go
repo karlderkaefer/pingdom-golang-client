@@ -41,6 +41,44 @@ func (suite *APITestSuite) TestGetTransactionCheck() {
 	for _, check := range checks.Checks {
 		suite.T().Log(*check.Name)
 	}
+}
+
+func (suite *APITestSuite) TestUpsertTransactionCheck() {
+	checkName := "manual-upsert-karl"
+	defer func() {
+		// Delete the check
+		_, _, err := suite.apiClient.TMSChecksAPI.DeleteCheckByName(context.Background(), checkName)
+		if err != nil {
+			suite.T().Logf("Error deleting check: %v\n", err)
+		}
+	}() // defer is executed after the function returns
+	url := "https://www.google.com"
+	step := pingdom.NewStep()
+	step.SetArgs(pingdom.StepArgs{Url: &url})
+	step.SetFn("go_to")
+	checkWithoutID := *pingdom.NewCheckWithoutID(checkName, []pingdom.Step{*step})
+	action, created, _, err := suite.apiClient.TMSChecksAPI.UpsertCheck(context.Background(), checkWithoutID)
+	idFirst := created.ID
+	suite.NoError(err)
+	suite.Assert().Equal(pingdom.APIActionCreate, action)
+	suite.Assert().NotNil(created.Name)
+	suite.Assert().Equal(checkName, *created.Name)
+	suite.Assert().Equal("https://www.google.com", *created.Steps[0].Args.Url)
+	suite.T().Logf("%s check with name %s\n", action, *created.Name)
+
+	// Update the check
+	url2 := "https://aws.amazon.com"
+	step.SetArgs(pingdom.StepArgs{Url: &url2})
+	step.SetFn("go_to")
+	checkWithoutID2 := *pingdom.NewCheckWithoutID(checkName, []pingdom.Step{*step})
+	action, updated, _, err := suite.apiClient.TMSChecksAPI.UpsertCheck(context.Background(), checkWithoutID2)
+	suite.NoError(err)
+	suite.Assert().Equal(pingdom.APIActionUpdate, action)
+	suite.Assert().NotNil(updated.Name)
+	suite.Assert().Equal(checkName, *updated.Name)
+	suite.Assert().Equal("https://aws.amazon.com", *updated.Steps[0].Args.Url)
+	suite.Assert().Equal(idFirst, updated.ID)
+	suite.T().Logf("%s check with name %s\n", action, *updated.Name)
 
 }
 
@@ -59,9 +97,9 @@ func (suite *APITestSuite) TestCreateTransactionCheck() {
 		suite.T().Logf("Created check with name `manual-create-karl` and id %v\n", created)
 	} else {
 		suite.T().Logf("Check with name `manual-create-karl` and id %d already exists. Updating...", id)
-		_, r, err := suite.apiClient.TMSChecksAPI.ModifyCheck(context.Background(), id).CheckWithoutIDPUT(*checkWithoutID.AsPut()).Execute()
+		updated, _, err := suite.apiClient.TMSChecksAPI.ModifyCheck(context.Background(), id).CheckWithoutIDPUT(*checkWithoutID.AsPut()).Execute()
 		suite.NoError(err)
-		suite.T().Logf("Response from `TMSChecksAPI.ModifyCheck` Updated: %v\n", r)
+		suite.T().Logf("Updated check %v\n", updated)
 		//suite.Assert().Equal(updated.Name, "manual-create-karl")
 	}
 }
