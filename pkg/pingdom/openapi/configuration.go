@@ -100,8 +100,8 @@ func NewConfiguration() *Configuration {
 	return cfg
 }
 
-func (c *Configuration) AddApiToken(token string) {
-	c.AddDefaultHeader("Authorization", "Bearer " + token)
+func (c *Configuration) SetApiToken(token string) {
+	c.AddDefaultHeader("Authorization", fmt.Sprintf("Bearer %s", token))
 }
 
 // AddDefaultHeader adds a new HTTP header to the default header in the request

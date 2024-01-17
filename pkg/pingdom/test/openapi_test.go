@@ -17,7 +17,7 @@ type APITestSuite struct {
 
 func (suite *APITestSuite) SetupSuite() {
 	cfg := pingdom.NewConfiguration()
-	cfg.AddApiToken(os.Getenv("PINGDOM_API_TOKEN"))
+	cfg.SetApiToken(os.Getenv("PINGDOM_API_TOKEN"))
 	suite.apiClient = pingdom.NewAPIClient(cfg)
 }
 
@@ -83,24 +83,31 @@ func (suite *APITestSuite) TestUpsertTransactionCheck() {
 }
 
 func (suite *APITestSuite) TestCreateTransactionCheck() {
+	checkName := "manual-create-karl"
+	defer func() {
+		// Delete the check
+		_, _, err := suite.apiClient.TMSChecksAPI.DeleteCheckByName(context.Background(), checkName)
+		if err != nil {
+			suite.T().Logf("Error deleting check: %v\n", err)
+		}
+	}() // defer is executed after the function returns
 	url := "https://www.google.com"
 	step := pingdom.NewStep()
 	step.SetArgs(pingdom.StepArgs{Url: &url})
 	step.SetFn("go_to")
-	checkWithoutID := *pingdom.NewCheckWithoutID("manual-create-karl", []pingdom.Step{*step})
-	id := getCheckIdByName("manual-create-karl", suite)
+	checkWithoutID := *pingdom.NewCheckWithoutID(checkName, []pingdom.Step{*step})
+	id := getCheckIdByName(checkName, suite)
 	if id == 0 {
 		created, resp, err := suite.apiClient.TMSChecksAPI.AddCheck(context.Background()).CheckWithoutID(checkWithoutID).Execute()
 		suite.NoError(err)
 		suite.T().Logf("Response from `TMSChecksAPI.AddCheck` Create: %v\n", resp)
 		suite.Assert().NotNil(created.Name)
-		suite.T().Logf("Created check with name `manual-create-karl` and id %v\n", created)
+		suite.T().Logf("Created check with name `%s` and id %v\n", checkName, created)
 	} else {
-		suite.T().Logf("Check with name `manual-create-karl` and id %d already exists. Updating...", id)
+		suite.T().Logf("Check with name `%s` and id %d already exists. Updating...", checkName, id)
 		updated, _, err := suite.apiClient.TMSChecksAPI.ModifyCheck(context.Background(), id).CheckWithoutIDPUT(*checkWithoutID.AsPut()).Execute()
 		suite.NoError(err)
 		suite.T().Logf("Updated check %v\n", updated)
-		//suite.Assert().Equal(updated.Name, "manual-create-karl")
 	}
 }
 

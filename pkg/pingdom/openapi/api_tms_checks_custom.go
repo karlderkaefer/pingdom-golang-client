@@ -9,16 +9,16 @@ import (
 type APIAction string
 
 const (
-    APIActionCreate APIAction = "created"
-    APIActionUpdate APIAction = "updated"
-	APIActionError APIAction = "error"
+	APIActionCreate APIAction = "created"
+	APIActionUpdate APIAction = "updated"
+	APIActionError  APIAction = "error"
 )
 
 func (a *TMSChecksAPIService) UpsertCheck(ctx context.Context, check CheckWithoutID) (APIAction, *CheckGetWithID, *http.Response, error) {
 	if check.Name == "" {
 		return APIActionError, nil, nil, errors.New("Check name is required")
 	}
-	id, resp, err := a.GetCheckIdkByName(ctx, check.Name)
+	id, resp, err := a.GetTransactionCheckIdkByName(ctx, check.Name)
 	if err != nil {
 		return APIActionError, nil, resp, err
 	}
@@ -26,7 +26,7 @@ func (a *TMSChecksAPIService) UpsertCheck(ctx context.Context, check CheckWithou
 		updated, resp, err := a.ModifyCheck(ctx, id).CheckWithoutIDPUT(*check.AsPut()).Execute()
 		result := &CheckGetWithID{
 			CheckWithoutIDGET: *updated,
-			ID:             id,
+			ID:                id,
 		}
 		return APIActionUpdate, result, resp, err
 	}
@@ -42,10 +42,11 @@ func (a *TMSChecksAPIService) UpsertCheck(ctx context.Context, check CheckWithou
 	return APIActionCreate, result, resp, nil
 }
 
-func (a *TMSChecksAPIService) GetCheckIdkByName(ctx context.Context, name string) (int64, *http.Response, error) {
+func (a *TMSChecksAPIService) GetTransactionCheckIdkByName(ctx context.Context, name string) (int64, *http.Response, error) {
 	checks, resp, err := a.GetAllChecksExecute(ApiGetAllChecksRequest{
 		ApiService: a,
 		ctx:        ctx,
+		type_:      PtrString("script"),
 	})
 	if err != nil {
 		return 0, resp, err
@@ -59,7 +60,7 @@ func (a *TMSChecksAPIService) GetCheckIdkByName(ctx context.Context, name string
 }
 
 func (a *TMSChecksAPIService) DeleteCheckByName(ctx context.Context, name string) (*DeleteCheck200Response, *http.Response, error) {
-	id, resp, err := a.GetCheckIdkByName(ctx, name)
+	id, resp, err := a.GetTransactionCheckIdkByName(ctx, name)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -76,7 +77,7 @@ func (a *TMSChecksAPIService) TestGetTransactionCheck(ctx context.Context, id in
 	}
 	result := &CheckGetWithID{
 		CheckWithoutIDGET: *check,
-		ID:             id,
+		ID:                id,
 	}
 	return result, resp, nil
 }
