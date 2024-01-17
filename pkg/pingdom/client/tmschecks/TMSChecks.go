@@ -434,25 +434,27 @@ type StateStatus string
 
 // Step Step is a struct describing a single step of a TMS check
 type Step struct {
-	// Args Parameters for the operation
+	// Args StepArg for the operation
 	// The actual parameters required depend on the chosen operation
-	Parameters *struct {
-		Checkbox *string `json:"checkbox,omitempty"`
-		Element  *string `json:"element,omitempty"`
-		Form     *string `json:"form,omitempty"`
-		Input    *string `json:"input,omitempty"`
-		Option   *string `json:"option,omitempty"`
-		Password *string `json:"password,omitempty"`
-		Radio    *string `json:"radio,omitempty"`
-		Seconds  *string `json:"seconds,omitempty"`
-		Select   *string `json:"select,omitempty"`
-		URL      *string `json:"url,omitempty"`
-		Username *string `json:"username,omitempty"`
-		Value    *string `json:"value,omitempty"`
-	} `json:"args,omitempty"`
+	StepArg *StepArg `json:"args,omitempty"`
 
 	// Fn Operation to be done
 	Function *string `json:"fn,omitempty"`
+}
+
+type StepArg struct {
+	Checkbox *string `json:"checkbox,omitempty"`
+	Element  *string `json:"element,omitempty"`
+	Form     *string `json:"form,omitempty"`
+	Input    *string `json:"input,omitempty"`
+	Option   *string `json:"option,omitempty"`
+	Password *string `json:"password,omitempty"`
+	Radio    *string `json:"radio,omitempty"`
+	Seconds  *string `json:"seconds,omitempty"`
+	Select   *string `json:"select,omitempty"`
+	URL      *string `json:"url,omitempty"`
+	Username *string `json:"username,omitempty"`
+	Value    *string `json:"value,omitempty"`
 }
 
 // Unmonitored Amount of time when there is no specific data about check status (up/down) within given interval (only with the `include_uptime` flag)
