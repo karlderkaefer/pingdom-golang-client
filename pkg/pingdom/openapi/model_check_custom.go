@@ -11,6 +11,7 @@ func (check *CheckWithoutID) AsPut() *CheckWithoutIDPUT{
         Name: &check.Name,
         Region: check.Region,
         SeverityLevel: check.SeverityLevel,
+        SendNotificationWhenDown: check.SendNotificationWhenDown,
         Steps: check.Steps,
         Tags: check.Tags,
         TeamIds: check.TeamIds,
