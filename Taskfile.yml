@@ -2,7 +2,7 @@ version: '3'
 
 tasks:
   generate-client:
-    desc: Generate Go clients for each OpenAPI spec file
+    desc: Deprecated Generate Go clients for each OpenAPI spec file
     cmds:
       - |
         for spec in hack/specs/*_API_Spec.yaml; do
